@@ -1,0 +1,77 @@
+{
+  "title": "HomeWizard Smart Home (Legacy)",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Gateway verbinden",
+        "description": "Adresse und Passwort des alten HomeWizard-Smart-Home-Gateways eingeben.",
+        "data": {
+          "host": "Gateway-Adresse",
+          "password": "Gateway-Passwort"
+        }
+      },
+      "reconfigure": {
+        "title": "Gateway neu konfigurieren",
+        "description": "Adresse und Passwort des alten HomeWizard-Smart-Home-Gateways eingeben.",
+        "data": {
+          "host": "Gateway-Adresse",
+          "password": "Gateway-Passwort"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Gateway-Passwort aktualisieren",
+        "description": "Adresse und Passwort des alten HomeWizard-Smart-Home-Gateways eingeben.",
+        "data": {
+          "host": "Gateway-Adresse",
+          "password": "Gateway-Passwort"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Keine Verbindung zum Gateway. Adresse, Passwort und Netzwerk prüfen.",
+      "invalid_auth": "Das Gateway hat das Passwort abgelehnt.",
+      "invalid_host": "HTTP(S)-Hostname oder IP-Adresse ohne Zugangsdaten oder Pfad eingeben."
+    },
+    "abort": {
+      "already_configured": "Dieses Gateway ist bereits eingerichtet.",
+      "wrong_gateway": "Diese Adresse gehört zu einem anderen Gateway.",
+      "reauth_successful": "Authentifizierung aktualisiert.",
+      "reconfigure_successful": "Gateway-Konfiguration aktualisiert."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Status-Abfrageintervall (5–300 Sekunden)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature": {
+        "name": "Temperatur"
+      },
+      "humidity": {
+        "name": "Luftfeuchtigkeit"
+      },
+      "target_temperature": {
+        "name": "Zieltemperatur"
+      }
+    },
+    "binary_sensor": {
+      "low_battery": {
+        "name": "Batterie schwach"
+      }
+    },
+    "button": {
+      "activate": {
+        "name": "Aktivieren"
+      },
+      "deactivate": {
+        "name": "Deaktivieren"
+      }
+    }
+  }
+}

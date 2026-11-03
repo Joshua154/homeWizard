@@ -1,0 +1,113 @@
+{
+   "response" : [
+      {
+         "id" : 0,
+         "name" : "switches 0",
+         "type" : "somfy"
+      },
+      {
+         "id" : 1,
+         "name" : "switches 1",
+         "type" : "somfy"
+      },
+      {
+         "id" : 2,
+         "name" : "switches 2",
+         "type" : "somfy"
+      },
+      {
+         "id" : 3,
+         "name" : "switches 3",
+         "type" : "somfy"
+      },
+      {
+         "id" : 4,
+         "name" : "switches 4",
+         "type" : "somfy"
+      },
+      {
+         "id" : 5,
+         "name" : "switches 5",
+         "type" : "somfy"
+      },
+      {
+         "id" : 6,
+         "name" : "switches 6",
+         "status" : "on",
+         "type" : "switch"
+      },
+      {
+         "id" : 7,
+         "name" : "switches 7",
+         "status" : "off",
+         "type" : "switch"
+      },
+      {
+         "id" : 8,
+         "name" : "switches 8",
+         "status" : "off",
+         "type" : "switch"
+      },
+      {
+         "id" : 9,
+         "name" : "switches 9",
+         "status" : "off",
+         "type" : "switch"
+      },
+      {
+         "id" : 10,
+         "name" : "switches 10",
+         "status" : "off",
+         "type" : "switch"
+      },
+      {
+         "id" : 11,
+         "name" : "switches 11",
+         "type" : "somfy"
+      },
+      {
+         "id" : 12,
+         "name" : "switches 12",
+         "type" : "somfy"
+      },
+      {
+         "id" : 13,
+         "name" : "switches 13",
+         "type" : "somfy"
+      },
+      {
+         "id" : 14,
+         "name" : "switches 14",
+         "type" : "somfy"
+      },
+      {
+         "id" : 15,
+         "name" : "switches 15",
+         "type" : "somfy"
+      },
+      {
+         "id" : 16,
+         "name" : "switches 16",
+         "tte" : 15,
+         "type" : "radiator"
+      },
+      {
+         "id" : 17,
+         "name" : "switches 17",
+         "tte" : 15,
+         "type" : "radiator"
+      },
+      {
+         "id" : 18,
+         "name" : "switches 18",
+         "type" : "somfy"
+      },
+      {
+         "id" : 19,
+         "name" : "switches 19",
+         "type" : "somfy"
+      }
+   ],
+   "status" : "ok",
+   "version" : "3.403"
+}

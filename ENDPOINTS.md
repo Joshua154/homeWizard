@@ -117,3 +117,31 @@ Live discovery established route availability and sampled shapes. Before impleme
 Do not distribute the original collection or authenticated URLs. Retain only sanitized response fixtures needed by the integration.
 
 All 21 collection requests are covered above, including duplicates and inconsistent entries. HTTP `GET` alone does not identify a read-only operation in this API.
+
+## Implementation verification (2026-11-03)
+
+Read-only fixture capture established the following additional details on firmware 3.403:
+
+- Invalid passwords return HTTP **200**, `status: "failed"`, and numeric `error: 1`.
+  Treat this as an authentication failure, alongside HTTP 401/403. Other failed
+  envelopes remain general API errors; their meanings have not been established.
+- Complete `/swlist` and `/gplist` records matched `switches` and `scenes` from
+  `/get-sensors` during the comparison. The initial integration uses the primary
+  inventory without supplemental polling.
+- Ordinary switches report `status: "on"` or `"off"`. KaKu types are `motion`,
+  `contact`, `smoke`, and `light`; their status is `"yes"`, `"no"`, or `null`.
+  Light status remains generic without a light/dark interpretation.
+- Radiators expose numeric `tte` (both captured values were 15), mapped to the
+  planned read-only target temperature in degrees Celsius. Physical command
+  behavior and radiator controls remain unverified/deferred.
+- One thermometer has numeric `te` and `hu`; the other has neither field in
+  inventory or status. Only returned measurement fields create entities.
+- `lowBattery` is `"yes"`/`"no"` in the two thermometer records and the wind/rain
+  records. These fields were absent from status, so battery readings use the most
+  recent successful inventory unless a status record explicitly supplies a value.
+- All 13 Somfy records were absent from status and remain registered from inventory.
+
+Sanitized fixtures live in `tests/fixtures`. They replace names and gateway serial,
+omit cameras and connection data, and retain only allowlisted state fields. This
+snapshot produces 46 entities. No live device command was executed; the corrected
+`/sf/{id}/up` route is covered by mocked command tests.

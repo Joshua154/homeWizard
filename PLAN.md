@@ -54,3 +54,22 @@ The initial implementation targets your gateway’s verified API responses and f
 - Sensor state reflects the gateway’s latest report. Polling cannot guarantee capture of every brief radio event.
 - Deliver locally first. GitHub publishing, real repository metadata, and HACS listing submission remain a separate publishing step; placeholder metadata must be clearly identified.
 - Read-only route discovery was performed and documented locally. No device commands were executed.
+
+## Implementation progress (2026-11-03)
+
+- Implemented the local `0.1.0` integration under `custom_components/homewizard_legacy`:
+  UI setup, duplicate detection, address/password reconfiguration, reauthentication,
+  configurable status polling, inventory refresh, dynamic discovery and all initial
+  entity platforms described above.
+- Captured sanitized read-only fixtures and verified the authentication error
+  envelope and supplemental inventory equivalence; see the new verification
+  section in `ENDPOINTS.md`.
+- Added English/German translations, safe structural diagnostics, original icon
+  assets, MIT license, local installation instructions and an allowlisted ZIP builder.
+- Added Home Assistant 2026.10.4 tests and a locked Python 3.14 development environment.
+- Validation passed: 57 tests, Ruff, and matching Home Assistant hassfest
+  (0 invalid integrations). The local installation ZIP was checked for private
+  collection files and credentials.
+- Live command validation and installation on the user's Home Assistant instance
+  remain unperformed. Repository metadata is explicitly placeholder content;
+  publishing and HACS submission remain a separate step.

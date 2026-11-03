@@ -1,0 +1,77 @@
+{
+  "title": "HomeWizard Smart Home (Legacy)",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect gateway",
+        "description": "Enter the address and password of your legacy HomeWizard Smart Home gateway.",
+        "data": {
+          "host": "Gateway address",
+          "password": "Gateway password"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure gateway",
+        "description": "Enter the address and password of your legacy HomeWizard Smart Home gateway.",
+        "data": {
+          "host": "Gateway address",
+          "password": "Gateway password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Update gateway password",
+        "description": "Enter the address and password of your legacy HomeWizard Smart Home gateway.",
+        "data": {
+          "host": "Gateway address",
+          "password": "Gateway password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot communicate with the gateway. Check its address, password and network connection.",
+      "invalid_auth": "The gateway rejected the password.",
+      "invalid_host": "Enter an HTTP(S) hostname or IP address without credentials or a path."
+    },
+    "abort": {
+      "already_configured": "This gateway is already configured.",
+      "wrong_gateway": "This address belongs to a different gateway.",
+      "reauth_successful": "Authentication updated.",
+      "reconfigure_successful": "Gateway configuration updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Status polling interval (5–300 seconds)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature": {
+        "name": "Temperature"
+      },
+      "humidity": {
+        "name": "Humidity"
+      },
+      "target_temperature": {
+        "name": "Target temperature"
+      }
+    },
+    "binary_sensor": {
+      "low_battery": {
+        "name": "Low battery"
+      }
+    },
+    "button": {
+      "activate": {
+        "name": "Activate"
+      },
+      "deactivate": {
+        "name": "Deactivate"
+      }
+    }
+  }
+}

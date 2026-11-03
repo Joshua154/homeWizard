@@ -12,5 +12,6 @@ base_url = http://{ip_address}/{password}
 ## Control a Somfy cover.
 {base_url}/sf/{somfy_id}/{direction}
 
-## Set thermostat temperature.
-{base_url}/sw/{radiator_id}/settarget/{temperature}
+## Radiator target temperature (read-only).
+Read the `tte` field from `{base_url}/get-status`.
+Radiator command routing is not verified and remains deferred; see ENDPOINTS.md.
