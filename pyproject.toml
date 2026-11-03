@@ -18,7 +18,8 @@ testpaths = ["tests"]
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.ruff]
-target-version = "py314"
+# Keep integration syntax importable on Home Assistant's Python 3.13 runtimes.
+target-version = "py313"
 line-length = 100
 
 [tool.ruff.lint]

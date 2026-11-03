@@ -41,7 +41,7 @@ def normalize_address(address: str) -> str:
         ):
             raise ValueError
         _ = url.port
-    except ValueError, TypeError:
+    except (ValueError, TypeError):
         raise ValueError("Enter a gateway address without credentials or a path") from None
     return str(url.origin())
 
@@ -78,7 +78,7 @@ class HomeWizardClient:
                     if response.status != 200:
                         raise GatewayError("Gateway returned an HTTP error")
                     payload = await response.json(content_type=None)
-            except aiohttp.ClientError, TimeoutError, ValueError:
+            except (aiohttp.ClientError, TimeoutError, ValueError):
                 raise GatewayError("Gateway request failed or timed out") from None
         if (
             isinstance(payload, dict)

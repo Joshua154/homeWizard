@@ -59,6 +59,14 @@ uv run ruff check custom_components tests scripts
 uv run python scripts/package.py
 ```
 
+Integration source retains Python 3.13-compatible syntax, enforced by Ruff's
+target version and a syntax regression test. The full integration tests run
+against the newer development baseline above; this does not establish full
+compatibility with older Home Assistant releases.
+
+Config flows use `probatio` when available and fall back to `voluptuous` on
+older Home Assistant installations, including 2026.1.1.
+
 Tests use sanitized gateway fixtures and mocked HTTP/device commands. No live
 device commands were executed during implementation. Live command testing, if
 later performed, remains restricted to switch ID 8 with its initial state
