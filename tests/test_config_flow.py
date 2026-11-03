@@ -1,13 +1,39 @@
+import builtins
+import importlib
 from unittest.mock import patch
 
 import pytest
 from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResultType
 
+from custom_components.homewizard_legacy import config_flow
 from custom_components.homewizard_legacy.api import AuthenticationError, GatewayError
 from custom_components.homewizard_legacy.const import DOMAIN
 
 INPUT = {"host": "gateway.test", "password": "test-secret"}
+
+
+async def test_schema_fallback_without_probatio():
+    """The flow must load and build a form on voluptuous-based installations."""
+    import voluptuous
+
+    original_import = builtins.__import__
+
+    def without_probatio(name, *args, **kwargs):
+        if name == "probatio":
+            raise ModuleNotFoundError("No module named 'probatio'", name="probatio")
+        return original_import(name, *args, **kwargs)
+
+    try:
+        with patch("builtins.__import__", side_effect=without_probatio):
+            importlib.reload(config_flow)
+        flow = config_flow.HomeWizardConfigFlow()
+        result = await flow.async_step_user()
+        assert result["type"] == FlowResultType.FORM
+        assert isinstance(result["data_schema"], voluptuous.Schema)
+        assert result["data_schema"](INPUT) == INPUT
+    finally:
+        importlib.reload(config_flow)
 
 
 async def test_setup_and_duplicate(hass, client, entry):

@@ -1,6 +1,5 @@
 """UI setup, serial-based duplicates, reauthentication and reconfiguration."""
 
-import probatio as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_SCAN_INTERVAL
 from homeassistant.core import callback
@@ -9,6 +8,14 @@ from homeassistant.helpers.selector import TextSelector, TextSelectorConfig, Tex
 
 from .api import AuthenticationError, GatewayError, HomeWizardClient, normalize_address
 from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
+
+try:
+    import probatio as vol
+except ModuleNotFoundError as err:
+    if err.name != "probatio":
+        raise
+    # Older Home Assistant releases use voluptuous for flow schemas.
+    import voluptuous as vol
 
 
 class HomeWizardConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
