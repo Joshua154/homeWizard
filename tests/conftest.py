@@ -7,7 +7,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homewizard_legacy.const import DOMAIN
+from custom_components.homewizard_smarthome.const import DOMAIN
 
 
 def fixture(name):
@@ -26,9 +26,9 @@ def client():
     client.get_sensors.return_value = fixture("get-sensors")["response"]
     client.get_status.return_value = fixture("get-status")["response"]
     with (
-        patch("custom_components.homewizard_legacy.HomeWizardClient", return_value=client),
+        patch("custom_components.homewizard_smarthome.HomeWizardClient", return_value=client),
         patch(
-            "custom_components.homewizard_legacy.config_flow.HomeWizardClient", return_value=client
+            "custom_components.homewizard_smarthome.config_flow.HomeWizardClient", return_value=client
         ),
     ):
         yield client

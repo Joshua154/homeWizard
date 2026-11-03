@@ -47,7 +47,7 @@ def normalize_address(address: str) -> str:
 
 
 class HomeWizardClient:
-    """GET-only legacy API, including non-idempotent command routes."""
+    """GET-only HomeWizard smartHome API, including non-idempotent command routes."""
 
     def __init__(self, session: aiohttp.ClientSession, address: str, password: str):
         self._session = session

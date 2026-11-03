@@ -54,7 +54,7 @@ class HomeWizardConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         return self.async_update_and_abort(entry, data_updates=data)
                     return self.async_update_reload_and_abort(entry, data_updates=data)
                 self._abort_if_unique_id_configured()
-                return self.async_create_entry(title="HomeWizard Smart Home", data=data)
+                return self.async_create_entry(title="HomeWizard smartHome", data=data)
         schema = vol.Schema(
             {
                 vol.Required(CONF_HOST, default=entry.data[CONF_HOST] if entry else ""): str,

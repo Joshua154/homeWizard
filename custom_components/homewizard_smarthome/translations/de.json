@@ -1,10 +1,10 @@
 {
-  "title": "HomeWizard Smart Home (Legacy)",
+  "title": "HomeWizard smartHome",
   "config": {
     "step": {
       "user": {
         "title": "Gateway verbinden",
-        "description": "Adresse und Passwort des alten HomeWizard-Smart-Home-Gateways eingeben.",
+        "description": "Adresse und Passwort des HomeWizard-smartHome-Gateways eingeben.",
         "data": {
           "host": "Gateway-Adresse",
           "password": "Gateway-Passwort"
@@ -12,7 +12,7 @@
       },
       "reconfigure": {
         "title": "Gateway neu konfigurieren",
-        "description": "Adresse und Passwort des alten HomeWizard-Smart-Home-Gateways eingeben.",
+        "description": "Adresse und Passwort des HomeWizard-smartHome-Gateways eingeben.",
         "data": {
           "host": "Gateway-Adresse",
           "password": "Gateway-Passwort"
@@ -20,7 +20,7 @@
       },
       "reauth_confirm": {
         "title": "Gateway-Passwort aktualisieren",
-        "description": "Adresse und Passwort des alten HomeWizard-Smart-Home-Gateways eingeben.",
+        "description": "Adresse und Passwort des HomeWizard-smartHome-Gateways eingeben.",
         "data": {
           "host": "Gateway-Adresse",
           "password": "Gateway-Passwort"

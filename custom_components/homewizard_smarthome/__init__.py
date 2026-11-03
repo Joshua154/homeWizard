@@ -1,4 +1,4 @@
-"""HomeWizard Smart Home (Legacy) integration."""
+"""HomeWizard smartHome integration."""
 
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_SCAN_INTERVAL
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady

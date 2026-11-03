@@ -2,7 +2,7 @@ from collections import Counter
 
 import pytest
 
-from custom_components.homewizard_legacy.models import (
+from custom_components.homewizard_smarthome.models import (
     boolean_value,
     discover,
     index_devices,

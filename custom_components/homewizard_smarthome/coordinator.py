@@ -64,9 +64,9 @@ class HomeWizardCoordinator(DataUpdateCoordinator):
         registry.async_get_or_create(
             config_entry_id=self.config_entry.entry_id,
             identifiers={(DOMAIN, self.serial)},
-            name="HomeWizard Smart Home",
+            name="HomeWizard smartHome",
             manufacturer="HomeWizard",
-            model="Legacy gateway",
+            model="smartHome gateway",
             sw_version=self.firmware,
         )
         supported = {spec.device_key for spec in discover(self.inventory, self.status)}

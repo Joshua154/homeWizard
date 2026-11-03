@@ -1,8 +1,8 @@
-# HomeWizard Smart Home HACS integration
+# HomeWizard smartHome HACS integration
 
 ## Summary
 
-Build **HomeWizard Smart Home (Legacy)** under `custom_components/homewizard_legacy`, separate from HomeWizard Energy.
+Build **HomeWizard smartHome** under `custom_components/homewizard_smarthome`, separate from HomeWizard Energy.
 
 Enter the gateway address and password once through Home Assistant’s UI. Automatically discover its supported devices, create their entities, and detect later additions without YAML configuration.
 
@@ -57,7 +57,7 @@ The initial implementation targets your gateway’s verified API responses and f
 
 ## Implementation progress (2026-11-03)
 
-- Implemented the local `0.1.0` integration under `custom_components/homewizard_legacy`:
+- Implemented the local `0.1.0` integration under `custom_components/homewizard_smarthome`:
   UI setup, duplicate detection, address/password reconfiguration, reauthentication,
   configurable status polling, inventory refresh, dynamic discovery and all initial
   entity platforms described above.

@@ -1,17 +1,23 @@
-# HomeWizard Smart Home (Legacy)
+# HomeWizard smartHome
 
-Local Home Assistant custom integration for the original HomeWizard Smart Home
+Local Home Assistant custom integration for the original HomeWizard smartHome
 gateway. HomeWizard Energy products use a different API and integration.
 
 ## Install locally
 
-1. Copy `custom_components/homewizard_legacy` into your Home Assistant
+1. Copy `custom_components/homewizard_smarthome` into your Home Assistant
    configuration directory's `custom_components` folder.
 2. Restart Home Assistant.
 3. Open **Settings → Devices & services → Add integration** and select
-   **HomeWizard Smart Home (Legacy)**.
+   **HomeWizard smartHome**.
 4. Enter the gateway's hostname/IP (optional HTTP(S) scheme and port) and password.
    Do not include the password in the address.
+
+When upgrading from a differently named integration domain, remove its entry
+through **Settings → Devices & services** and remove its old custom component
+folder before installing this version. Add **HomeWizard smartHome** again after
+restarting. The domain change creates new registry identities; check entity IDs
+and update affected dashboards and automations.
 
 Use the integration's **Reconfigure** menu to change the address/password while
 preserving entity IDs. The replacement address must identify the same gateway.

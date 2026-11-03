@@ -7,9 +7,9 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 
-from custom_components.homewizard_legacy.api import GatewayError
-from custom_components.homewizard_legacy.const import DOMAIN
-from custom_components.homewizard_legacy.diagnostics import async_get_config_entry_diagnostics
+from custom_components.homewizard_smarthome.api import GatewayError
+from custom_components.homewizard_smarthome.const import DOMAIN
+from custom_components.homewizard_smarthome.diagnostics import async_get_config_entry_diagnostics
 
 
 def entity_id(hass, platform, category, device_id, key):

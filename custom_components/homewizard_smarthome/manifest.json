@@ -1,0 +1,12 @@
+{
+  "domain": "homewizard_smarthome",
+  "name": "HomeWizard smartHome",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://example.com/homewizard-smarthome",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://example.com/homewizard-smarthome/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

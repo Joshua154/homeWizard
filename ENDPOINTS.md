@@ -1,4 +1,4 @@
-# HomeWizard Legacy API endpoint layout
+# HomeWizard API endpoint layout
 
 Sources: every request in the local Postman collection, the integration plan, and live read-only checks on **2026-11-03**. The collection contains **21 requests covering 19 unique route templates**: 11 read routes and eight command routes. `Get weather Copy` duplicates `Get weather`; `Set Radiator` duplicates `Set dimmer`.
 
@@ -62,7 +62,7 @@ After supported commands, refresh `/get-status`; do not fabricate cover position
 
 ## Discovery and state
 
-These are the proposed client methods and polling responsibilities for `custom_components/homewizard_legacy`.
+These are the proposed client methods and polling responsibilities for `custom_components/homewizard_smarthome`.
 
 | Postman request | Endpoint | Proposed client method | Integration use | When to request |
 |---|---|---|---|---|

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import pytest
 from aiohttp import ClientSession, web
 
-from custom_components.homewizard_legacy.api import (
+from custom_components.homewizard_smarthome.api import (
     AuthenticationError,
     GatewayError,
     HomeWizardClient,

@@ -1275,7 +1275,7 @@ wheels = [
 ]
 
 [[package]]
-name = "homewizard-legacy"
+name = "homewizard-smarthome"
 version = "0.1.0"
 source = { virtual = "." }
 

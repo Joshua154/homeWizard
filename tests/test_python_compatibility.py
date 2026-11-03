@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-INTEGRATION = Path(__file__).resolve().parents[1] / "custom_components" / "homewizard_legacy"
+INTEGRATION = Path(__file__).resolve().parents[1] / "custom_components" / "homewizard_smarthome"
 
 
 @pytest.mark.parametrize("source", sorted(INTEGRATION.rglob("*.py")), ids=lambda p: p.name)

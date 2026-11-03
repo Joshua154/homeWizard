@@ -6,9 +6,9 @@ import pytest
 from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResultType
 
-from custom_components.homewizard_legacy import config_flow
-from custom_components.homewizard_legacy.api import AuthenticationError, GatewayError
-from custom_components.homewizard_legacy.const import DOMAIN
+from custom_components.homewizard_smarthome import config_flow
+from custom_components.homewizard_smarthome.api import AuthenticationError, GatewayError
+from custom_components.homewizard_smarthome.const import DOMAIN
 
 INPUT = {"host": "gateway.test", "password": "test-secret"}
 
@@ -37,7 +37,7 @@ async def test_schema_fallback_without_probatio():
 
 
 async def test_setup_and_duplicate(hass, client, entry):
-    with patch("custom_components.homewizard_legacy.async_setup_entry", return_value=True):
+    with patch("custom_components.homewizard_smarthome.async_setup_entry", return_value=True):
         result = await hass.config_entries.flow.async_init(
             DOMAIN, context={"source": config_entries.SOURCE_USER}, data=INPUT
         )
