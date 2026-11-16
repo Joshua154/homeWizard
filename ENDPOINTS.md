@@ -1,5 +1,9 @@
 # HomeWizard API endpoint layout
 
+The original discovery notes below describe the 0.1.0 baseline. The
+[0.2.0 expansion](#version-020-protocol-expansion-2026-11-16) supersedes its
+deferred radiator, dimmer, preset and measurement support.
+
 Sources: every request in the local Postman collection, the integration plan, and live read-only checks on **2026-11-03**. The collection contains **21 requests covering 19 unique route templates**: 11 read routes and eight command routes. `Get weather Copy` duplicates `Get weather`; `Set Radiator` duplicates `Set dimmer`.
 
 All routes use HTTP `GET`, including commands. Paths are relative to `http://{gateway_address}/{password}` **except `/handshake`, which uses `http://{gateway_address}` without the password prefix**. Keep passwords and full authenticated URLs out of logs and diagnostics.
@@ -145,3 +149,67 @@ Sanitized fixtures live in `tests/fixtures`. They replace names and gateway seri
 omit cameras and connection data, and retain only allowlisted state fields. This
 snapshot produces 46 entities. No live device command was executed; the corrected
 `/sf/{id}/up` route is covered by mocked command tests.
+
+## Version 0.2.0 protocol expansion (2026-11-16)
+
+The additional mappings come from the [official classic web application](http://app.homewizard.com/assets/app.min.js),
+whose controllers/models implement these exact routes and units. The downloaded
+source's SHA-256 is
+`749f341b58f105b682ff88db263b47cb2b19fe07009a5218bf2db67dec63fa15`.
+No application source is bundled with this integration. The
+[Homebridge client](https://github.com/rthewhite/homebridge-homewizard/tree/c07852fd9f21513c3924d7c225aa6e12b938b104/src/accessories)
+and [legacy Homey drivers](https://github.com/jtebbens/com.homewizard/tree/master/drivers)
+provide corroborating implementations. This is source verification and mocked
+testing, not live command verification on the user's gateway.
+
+| Command route | Meaning and accepted values |
+| --- | --- |
+| `/sw/{id}/settarget/{temperature}` | Radiator target; 5–28 °C, 0.5 °C steps (`radiatoroptions` in the official app). This replaces the erroneous duplicated Postman dimmer route. |
+| `/hl/{id}/settarget/{temperature}` | HeatLink indefinite override; 5–30 °C, 0.5 °C steps |
+| `/hl/{id}/settarget/0` | Clear HeatLink override and resume the wall thermostat; HA AUTO mode or preset `none` |
+| `/preset/{preset}` | Gateway preset: 0 home, 1 away, 2 sleep, 3 holiday |
+| `/sw/dim/{id}/{level}` | Dimmer/connected LED brightness, integer 0–100 percent; HA brightness is converted from 0–255 |
+| `/sw/{id}/{on\|off}/{hue}/{saturation}/{brightness}` | Hue lights in `switches`: hue 0–360 degrees, saturation/brightness 0–100 percent |
+| `/sw/{id}/{up\|down\|stop}` | Brel covers; ASUN supports up/down only in HA because a repeated direction is needed to stop |
+| `/gp/{id}/on` | Native HA scene activation; legacy on/off group buttons remain available |
+
+All commands pass through the same serialized client and coordinator, with one
+attempt, validated path/value components, safe error messages, and a status
+refresh after success. No arbitrary route/action service is exposed. No device
+commands or configuration changes were sent to a real gateway during this work.
+
+`get-status`'s root `preset` is retained separately from device collections and
+represented by a select entity attached to the existing gateway device. Scene
+and climate entities are additions, preserving previously registered identities.
+HeatLink reports `tte == 0` while the wall thermostat controls the target `rsp`;
+a positive `tte` is an override. Its returned temperature presets (`id`, `te`)
+provide Home/Away/Comfort/Sleep choices. Matching equal preset temperatures
+cannot identify an active preset and remain unknown.
+
+| Category | Supported measurement fields and interpretation |
+| --- | --- |
+| `thermometers` | `te` °C, `hu` %, returned `+`/`-` extrema |
+| `windmeters` | `ws`, `gu`, `ws+`, `ws-`; unit codes 0 km/h, 1 m/s, 2 Beaufort, 3 knots. `dir` carries a compass token plus explicit degrees, e.g. `WNW 292`. `te`/`wc` are °C. |
+| `rainmeters` | `mm` rain today and `3h` rain in the last three hours, both mm |
+| `uvmeters` | `uv` UV index, `uv+` maximum |
+| `energymeters` | `po` W, `dayTotal` kWh, returned power extrema |
+| `energylinks` | `aggregate`/`used` nested `po` W and `dayTotal` kWh; `gas.lastHour`/`gas.dayTotal` m³. S1/S2 channel type metadata `t1`/`t2`: solar/other/car/bike use W and kWh; water uses L/min and L. |
+| `heatlinks` | `rte` room temperature, `rsp` wall target, `tte` override target, `wte` boiler temperature (°C), `wp` bar; `heating`, `pump`, `dhw` on/off |
+| `kakusensors` | motion, contact/contact868, smoke/smoke868, light, leakage and doorbell reported states |
+
+Only returned fields create measurement entities, including explicit null values.
+Current measurements never fall back to stale inventory readings. Unit/channel
+metadata and low-battery values may use inventory if absent from status;
+explicit status null still overrides inventory. Unknown unit codes, unsupported
+channels and malformed readings stay unknown. Daily energy, gas and water
+reports are not advertised as lifetime increasing totals. Wind direction uses
+angular statistics on the validated HA baseline. Detectors/doorbells remain
+polled state, without guaranteed capture of brief events.
+
+Remaining limitations are explicit: weather displays have no evidenced direct
+measurement fields, camera feed/PTZ routes depend on model-specific database
+entries, separate `hues` bridge records are not light records, LED color
+temperature lacks an established Kelvin mapping, and pairing/configuration,
+trigger/timer editing and undocumented actuator families are not implemented.
+The new synthetic tests contain invented readings and identifiers derived from
+these schemas; they are not presented as hardware captures.

@@ -43,6 +43,8 @@ class HomeWizardEntity(CoordinatorEntity):
 
     @property
     def device_info(self):
+        if self.spec.category == "gateway":
+            return DeviceInfo(identifiers={(DOMAIN, self.coordinator.serial)})
         record = self.coordinator.inventory.get(self.spec.device_key, {})
         self._last_name = record.get("name", self._last_name)
         return DeviceInfo(
@@ -64,7 +66,12 @@ class HomeWizardEntity(CoordinatorEntity):
         status = self.coordinator.status.get(self.spec.device_key, {})
         if self.spec.key == "lowBattery" and self.spec.key not in status:
             return self.coordinator.inventory.get(self.spec.device_key, {}).get(self.spec.key)
-        return status.get(self.spec.key)
+        value = status
+        for key in self.spec.key.split("."):
+            if not isinstance(value, dict):
+                return None
+            value = value.get(key)
+        return value
 
     async def async_command(self, family, action):
         await self.coordinator.async_command(family, self.spec.device_id, action)

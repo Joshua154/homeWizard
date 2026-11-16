@@ -3,16 +3,21 @@
 import math
 from dataclasses import dataclass
 
+from .measurements import measurement_fields
+
 DeviceKey = tuple[str, str]
 
 
 def index_devices(data: dict) -> dict[DeviceKey, dict]:
-    return {
+    devices = {
         (category, str(record["id"])): record
         for category, records in data.items()
         if isinstance(records, list)
         for record in records
     }
+    if "preset" in data:
+        devices[("gateway", "0")] = {"preset": data["preset"]}
+    return devices
 
 
 @dataclass(frozen=True)
@@ -39,33 +44,32 @@ def discover(inventory: dict[DeviceKey, dict], status: dict[DeviceKey, dict]) ->
             specs.add(EntitySpec(category, device_id, key, platform, kind))
 
         kind = record.get("type", "")
+        if not isinstance(kind, str):
+            kind = ""
         if category == "switches":
-            if kind == "switch":
+            if kind in {"switch", "virtual"}:
                 add("status", "switch")
-            elif kind == "somfy":
-                add("cover", "cover")
+            elif kind in {"somfy", "brel", "asun"}:
+                add("cover", "cover", kind)
             elif kind == "radiator":
                 add("tte", "sensor", "temperature")
-        elif category == "kakusensors" and kind in {"motion", "contact", "smoke", "light"}:
-            add("status", "binary_sensor", kind)
-        elif category == "thermometers":
-            fields = record.keys() | status.get((category, device_id), {}).keys()
-            for key, sensor_kind in (("te", "temperature"), ("hu", "humidity")):
-                if key in fields:
-                    add(key, "sensor", sensor_kind)
+                add("climate", "climate", "radiator")
+            elif kind in {"dimmer", "hue", "led2ch"}:
+                add("status", "light", kind)
+        elif category == "heatlinks":
+            add("climate", "climate", "heatlink")
+        elif category == "somfy":
+            add("cover", "cover", "somfy")
+        elif category == "gateway":
+            add("preset", "select")
         elif category == "scenes":
             add("on", "button")
             add("off", "button")
-        if category in {
-            "thermometers",
-            "rainmeters",
-            "windmeters",
-            "weatherdisplays",
-            "kakusensors",
-            "switches",
-        }:
-            if "lowBattery" in record or "lowBattery" in status.get((category, device_id), {}):
-                add("lowBattery", "binary_sensor", "battery")
+            add("activate", "scene")
+        for key, platform, sensor_kind in measurement_fields(
+            category, record, status.get((category, device_id), {})
+        ):
+            add(key, platform, sensor_kind)
     return specs
 
 

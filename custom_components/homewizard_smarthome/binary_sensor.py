@@ -12,6 +12,9 @@ CLASSES = {
     "contact": BinarySensorDeviceClass.DOOR,
     "smoke": BinarySensorDeviceClass.SMOKE,
     "battery": BinarySensorDeviceClass.BATTERY,
+    "moisture": BinarySensorDeviceClass.MOISTURE,
+    "heat": BinarySensorDeviceClass.HEAT,
+    "running": BinarySensorDeviceClass.RUNNING,
 }
 
 
@@ -26,6 +29,14 @@ class HomeWizardBinarySensor(HomeWizardEntity, BinarySensorEntity):
         if spec.kind == "battery":
             self._attr_entity_category = EntityCategory.DIAGNOSTIC
             self._attr_translation_key = "low_battery"
+        elif spec.category == "heatlinks":
+            self._attr_translation_key = {
+                "heating": "heating",
+                "pump": "pump",
+                "dhw": "hot_water",
+            }[spec.key]
+        elif spec.kind == "doorbell":
+            self._attr_translation_key = "doorbell"
 
     @property
     def is_on(self):

@@ -22,6 +22,8 @@ def test_captured_inventory_counts_and_identity():
         "sensor": 4,
         "binary_sensor": 22,
         "button": 2,
+        "climate": 2,
+        "scene": 1,
     }
     assert sum(spec.kind == "battery" for spec in specs) == 4
     assert sum(spec.key == "tte" for spec in specs) == 2

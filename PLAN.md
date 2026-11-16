@@ -1,5 +1,29 @@
 # HomeWizard smartHome HACS integration
 
+## Expansion completed (2026-11-16, version 0.2.0)
+
+The original implementation plan below remains a historical baseline. The new
+release adds radiator and HeatLink climate controls, reported HeatLink presets,
+gateway preset selection, native scenes, dimmer/Hue/LED lights, Brel/ASUN covers,
+and weather/UV/energy/HeatLink measurements and additional detector variants.
+Protocol mappings and supported ranges are now backed by the original
+HomeWizard web application's controllers and models; see the 0.2.0 section in
+[ENDPOINTS.md](ENDPOINTS.md). Existing entity IDs and buttons remain intact.
+
+Three agents implemented heating, lighting and measurements independently, with
+the shared command client, coordinator, discovery, presets/scenes, documentation
+and integration review combined centrally. Validation uses mocked commands and
+synthetic protocol fixtures; no live device was actuated.
+
+Validation: 242 tests passed on the pinned Home Assistant 2026.10.4 / Python
+3.14.10 baseline; Ruff passed; matching hassfest reported 0 invalid integrations.
+The versioned 0.2.0 installation ZIP contains only the allowlisted release assets.
+
+Camera-model protocols, undocumented device families and native gateway
+administration are still outside the supported surface. README documents the
+exact supported controls and remaining limitations rather than implying every
+firmware function is available. Publishing/HACS submission remains separate.
+
 ## Summary
 
 Build **HomeWizard smartHome** under `custom_components/homewizard_smarthome`, separate from HomeWizard Energy.

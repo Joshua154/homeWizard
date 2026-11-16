@@ -20,7 +20,7 @@ def entity_id(hass, platform, category, device_id, key):
 
 async def test_setup_states_and_unload(hass, loaded, entry, client):
     states = hass.states.async_all()
-    assert len(states) == 46
+    assert len(states) == 49
     cover = hass.states.get(entity_id(hass, "cover", "switches", "0", "cover"))
     assert cover.state == STATE_UNKNOWN
     assert "current_position" not in cover.attributes

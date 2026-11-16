@@ -29,6 +29,68 @@ async def make_client(aiohttp_server, handler, password="secret"):
     return session, HomeWizardClient(session, str(server.make_url("/")), password)
 
 
+@pytest.mark.parametrize(
+    ("method", "args", "route"),
+    [
+        ("set_preset", (3,), "preset/3"),
+        ("set_dimmer", ("2", 42), "sw/dim/2/42"),
+        ("set_hue", ("3", True, 180, 60, 75), "sw/3/on/180/60/75"),
+        ("set_hue", ("3", False, 360, 100, 0), "sw/3/off/360/100/0"),
+        ("set_radiator_temperature", ("16", 21.5), "sw/16/settarget/21.5"),
+        ("set_heatlink_temperature", ("1", 20), "hl/1/settarget/20.0"),
+        ("clear_heatlink_override", ("1",), "hl/1/settarget/0"),
+        ("command", ("sw", "3", "up"), "sw/3/up"),
+        ("command", ("sw", "3", "stop"), "sw/3/stop"),
+    ],
+)
+async def test_extended_command_routes(aiohttp_server, method, args, route):
+    paths = []
+
+    async def handler(request):
+        paths.append(request.raw_path)
+        return web.json_response({"status": "ok"})
+
+    session, client = await make_client(aiohttp_server, handler, "p/a?#%")
+    async with session:
+        await getattr(client, method)(*args)
+    assert paths == [f"/p%2Fa%3F%23%25/{route}"]
+
+
+@pytest.mark.parametrize(
+    ("method", "args"),
+    [
+        ("set_preset", (True,)),
+        ("set_preset", (4,)),
+        ("set_preset", (-1,)),
+        ("set_preset", ("1",)),
+        ("set_dimmer", ("1/../../gp", 50)),
+        ("set_dimmer", ("²", 50)),
+        ("set_dimmer", ("1", 101)),
+        ("set_dimmer", ("1", 50.5)),
+        ("set_dimmer", ("1", float("nan"))),
+        ("set_hue", ("1", "on", 180, 50, 50)),
+        ("set_hue", ("1", True, 361, 50, 50)),
+        ("set_hue", ("1", True, 180, -1, 50)),
+        ("set_hue", ("1", True, 180, 50, 101)),
+        ("set_radiator_temperature", ("1", True)),
+        ("set_radiator_temperature", ("1", 4.5)),
+        ("set_radiator_temperature", ("1", 28.5)),
+        ("set_radiator_temperature", ("1", 20.1)),
+        ("set_heatlink_temperature", ("1", float("inf"))),
+        ("set_heatlink_temperature", ("1", 30.5)),
+        ("set_heatlink_temperature", ("1", 0)),
+        ("set_heatlink_temperature", ("1", 20.2)),
+        ("clear_heatlink_override", ("../0",)),
+    ],
+)
+async def test_invalid_extended_commands_never_send(method, args):
+    session = MagicMock()
+    client = HomeWizardClient(session, "http://gateway.test", "secret")
+    with pytest.raises(ValueError):
+        await getattr(client, method)(*args)
+    session.get.assert_not_called()
+
+
 async def test_root_handshake_escaped_password_and_commands(aiohttp_server):
     paths = []
 

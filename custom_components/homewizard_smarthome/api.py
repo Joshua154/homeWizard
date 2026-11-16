@@ -1,10 +1,20 @@
 """Serialized local HTTP API. Never expose authenticated URLs in errors."""
 
 import asyncio
+import math
 from typing import Any
 
 import aiohttp
 from yarl import URL
+
+from .const import (
+    HEATLINK_MAX_TEMP,
+    HEATLINK_MIN_TEMP,
+    HEATLINK_TEMP_STEP,
+    RADIATOR_MAX_TEMP,
+    RADIATOR_MIN_TEMP,
+    RADIATOR_TEMP_STEP,
+)
 
 
 class GatewayError(Exception):
@@ -132,8 +142,71 @@ class HomeWizardClient:
         return await self._request("gplist")
 
     async def command(self, family: str, device_id: str, action: str) -> None:
-        allowed = {"sw": {"on", "off"}, "sf": {"up", "down", "stop"}, "gp": {"on", "off"}}
-        if family not in allowed or action not in allowed[family] or not str(device_id).isdigit():
+        allowed = {
+            "sw": {"on", "off", "up", "down", "stop"},
+            "sf": {"up", "down", "stop"},
+            "gp": {"on", "off"},
+        }
+        if family not in allowed or action not in allowed[family]:
             raise ValueError("Unsupported gateway command")
+        device_id = self._device_id(device_id)
         # Exactly one attempt: retrying a timed-out radio command is unsafe.
         await self._request(f"{family}/{device_id}/{action}", command=True)
+
+    @staticmethod
+    def _device_id(device_id) -> str:
+        value = str(device_id)
+        if not value.isascii() or not value.isdecimal():
+            raise ValueError("Invalid gateway device ID")
+        return value
+
+    @staticmethod
+    def _number(value, minimum, maximum, step=1):
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+            or not minimum <= value <= maximum
+            or not math.isclose(value / step, round(value / step), abs_tol=1e-7)
+        ):
+            raise ValueError("Invalid gateway command value")
+        return value
+
+    async def set_preset(self, preset: int) -> None:
+        preset = int(self._number(preset, 0, 3))
+        await self._request(f"preset/{preset}", command=True)
+
+    async def set_dimmer(self, device_id: str, level: int) -> None:
+        device_id = self._device_id(device_id)
+        level = int(self._number(level, 0, 100))
+        await self._request(f"sw/dim/{device_id}/{level}", command=True)
+
+    async def set_hue(
+        self, device_id: str, on: bool, hue: int, saturation: int, brightness: int
+    ) -> None:
+        device_id = self._device_id(device_id)
+        if not isinstance(on, bool):
+            raise ValueError("Invalid gateway light state")
+        hue = int(self._number(hue, 0, 360))
+        saturation = int(self._number(saturation, 0, 100))
+        brightness = int(self._number(brightness, 0, 100))
+        state = "on" if on else "off"
+        await self._request(f"sw/{device_id}/{state}/{hue}/{saturation}/{brightness}", command=True)
+
+    async def set_radiator_temperature(self, device_id: str, temperature: float) -> None:
+        device_id = self._device_id(device_id)
+        temperature = self._number(
+            temperature, RADIATOR_MIN_TEMP, RADIATOR_MAX_TEMP, RADIATOR_TEMP_STEP
+        )
+        await self._request(f"sw/{device_id}/settarget/{temperature:.1f}", command=True)
+
+    async def set_heatlink_temperature(self, device_id: str, temperature: float) -> None:
+        device_id = self._device_id(device_id)
+        temperature = self._number(
+            temperature, HEATLINK_MIN_TEMP, HEATLINK_MAX_TEMP, HEATLINK_TEMP_STEP
+        )
+        await self._request(f"hl/{device_id}/settarget/{temperature:.1f}", command=True)
+
+    async def clear_heatlink_override(self, device_id: str) -> None:
+        device_id = self._device_id(device_id)
+        await self._request(f"hl/{device_id}/settarget/0", command=True)

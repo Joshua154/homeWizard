@@ -58,11 +58,116 @@
       },
       "target_temperature": {
         "name": "Zieltemperatur"
+      },
+      "boiler_temperature": {
+        "name": "Kesseltemperatur"
+      },
+      "energy_today": {
+        "name": "Energie heute"
+      },
+      "gas_last_hour": {
+        "name": "Gas letzte Stunde"
+      },
+      "gas_today": {
+        "name": "Gas heute"
+      },
+      "humidity_maximum": {
+        "name": "Maximale Luftfeuchtigkeit"
+      },
+      "humidity_minimum": {
+        "name": "Minimale Luftfeuchtigkeit"
+      },
+      "net_energy_today": {
+        "name": "Nettoenergie heute"
+      },
+      "net_power": {
+        "name": "Nettoleistung"
+      },
+      "power": {
+        "name": "Leistung"
+      },
+      "power_maximum": {
+        "name": "Maximale Leistung"
+      },
+      "power_minimum": {
+        "name": "Minimale Leistung"
+      },
+      "rain_last_three_hours": {
+        "name": "Regen letzte drei Stunden"
+      },
+      "rain_today": {
+        "name": "Regen heute"
+      },
+      "s1_rate": {
+        "name": "S1 aktueller Messwert"
+      },
+      "s1_today": {
+        "name": "S1 heute"
+      },
+      "s2_rate": {
+        "name": "S2 aktueller Messwert"
+      },
+      "s2_today": {
+        "name": "S2 heute"
+      },
+      "temperature_maximum": {
+        "name": "Maximale Temperatur"
+      },
+      "temperature_minimum": {
+        "name": "Minimale Temperatur"
+      },
+      "thermostat_setpoint": {
+        "name": "Thermostat-Solltemperatur"
+      },
+      "used_energy_today": {
+        "name": "Energieverbrauch heute"
+      },
+      "used_power": {
+        "name": "Leistungsaufnahme"
+      },
+      "uv_index": {
+        "name": "UV-Index"
+      },
+      "uv_index_maximum": {
+        "name": "Maximaler UV-Index"
+      },
+      "water_pressure": {
+        "name": "Wasserdruck"
+      },
+      "wind_chill": {
+        "name": "Gefühlte Temperatur"
+      },
+      "wind_direction": {
+        "name": "Windrichtung"
+      },
+      "wind_gust": {
+        "name": "Windböe"
+      },
+      "wind_speed": {
+        "name": "Windgeschwindigkeit"
+      },
+      "wind_speed_maximum": {
+        "name": "Maximale Windgeschwindigkeit"
+      },
+      "wind_speed_minimum": {
+        "name": "Minimale Windgeschwindigkeit"
       }
     },
     "binary_sensor": {
       "low_battery": {
         "name": "Batterie schwach"
+      },
+      "heating": {
+        "name": "Heizung"
+      },
+      "pump": {
+        "name": "Pumpe"
+      },
+      "hot_water": {
+        "name": "Warmwasser"
+      },
+      "doorbell": {
+        "name": "Türklingel"
       }
     },
     "button": {
@@ -71,6 +176,17 @@
       },
       "deactivate": {
         "name": "Deaktivieren"
+      }
+    },
+    "select": {
+      "preset": {
+        "name": "Voreinstellung",
+        "state": {
+          "home": "Zuhause",
+          "away": "Abwesend",
+          "sleep": "Schlafen",
+          "holiday": "Urlaub"
+        }
       }
     }
   }

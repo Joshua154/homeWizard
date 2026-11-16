@@ -50,6 +50,8 @@ class HomeWizardCoordinator(DataUpdateCoordinator):
             except GatewayError:
                 raise UpdateFailed("Cannot update the HomeWizard gateway") from None
             # Commit together; a failed request must never look like device removal.
+            if ("gateway", "0") in status and ("gateway", "0") not in inventory:
+                inventory = {**inventory, ("gateway", "0"): {}}
             self.inventory = inventory
             self.status = status
             if refresh_inventory:
@@ -71,6 +73,8 @@ class HomeWizardCoordinator(DataUpdateCoordinator):
         )
         supported = {spec.device_key for spec in discover(self.inventory, self.status)}
         for (category, device_id), record in self.inventory.items():
+            if category == "gateway":
+                continue
             if (category, device_id) not in supported and category not in {
                 "thermometers",
                 "rainmeters",
@@ -88,9 +92,30 @@ class HomeWizardCoordinator(DataUpdateCoordinator):
             )
 
     async def async_command(self, family, device_id, action):
+        await self._async_execute(self.client.command, family, device_id, action)
+
+    async def async_set_preset(self, preset):
+        await self._async_execute(self.client.set_preset, preset)
+
+    async def async_set_dimmer(self, device_id, level):
+        await self._async_execute(self.client.set_dimmer, device_id, level)
+
+    async def async_set_hue(self, device_id, on, hue, saturation, brightness):
+        await self._async_execute(self.client.set_hue, device_id, on, hue, saturation, brightness)
+
+    async def async_set_radiator_temperature(self, device_id, temperature):
+        await self._async_execute(self.client.set_radiator_temperature, device_id, temperature)
+
+    async def async_set_heatlink_temperature(self, device_id, temperature):
+        await self._async_execute(self.client.set_heatlink_temperature, device_id, temperature)
+
+    async def async_clear_heatlink_override(self, device_id):
+        await self._async_execute(self.client.clear_heatlink_override, device_id)
+
+    async def _async_execute(self, method, *args):
         try:
             async with self._operation_lock:
-                await self.client.command(family, device_id, action)
+                await method(*args)
         except AuthenticationError:
             self.async_set_update_error(UpdateFailed("Gateway authentication failed"))
             self.config_entry.async_start_reauth(self.hass)

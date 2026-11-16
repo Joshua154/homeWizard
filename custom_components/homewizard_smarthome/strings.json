@@ -58,11 +58,116 @@
       },
       "target_temperature": {
         "name": "Target temperature"
+      },
+      "boiler_temperature": {
+        "name": "Boiler temperature"
+      },
+      "energy_today": {
+        "name": "Energy today"
+      },
+      "gas_last_hour": {
+        "name": "Gas last hour"
+      },
+      "gas_today": {
+        "name": "Gas today"
+      },
+      "humidity_maximum": {
+        "name": "Maximum humidity"
+      },
+      "humidity_minimum": {
+        "name": "Minimum humidity"
+      },
+      "net_energy_today": {
+        "name": "Net energy today"
+      },
+      "net_power": {
+        "name": "Net power"
+      },
+      "power": {
+        "name": "Power"
+      },
+      "power_maximum": {
+        "name": "Maximum power"
+      },
+      "power_minimum": {
+        "name": "Minimum power"
+      },
+      "rain_last_three_hours": {
+        "name": "Rain last three hours"
+      },
+      "rain_today": {
+        "name": "Rain today"
+      },
+      "s1_rate": {
+        "name": "S1 current reading"
+      },
+      "s1_today": {
+        "name": "S1 today"
+      },
+      "s2_rate": {
+        "name": "S2 current reading"
+      },
+      "s2_today": {
+        "name": "S2 today"
+      },
+      "temperature_maximum": {
+        "name": "Maximum temperature"
+      },
+      "temperature_minimum": {
+        "name": "Minimum temperature"
+      },
+      "thermostat_setpoint": {
+        "name": "Thermostat setpoint"
+      },
+      "used_energy_today": {
+        "name": "Energy consumed today"
+      },
+      "used_power": {
+        "name": "Power consumption"
+      },
+      "uv_index": {
+        "name": "UV index"
+      },
+      "uv_index_maximum": {
+        "name": "Maximum UV index"
+      },
+      "water_pressure": {
+        "name": "Water pressure"
+      },
+      "wind_chill": {
+        "name": "Wind chill"
+      },
+      "wind_direction": {
+        "name": "Wind direction"
+      },
+      "wind_gust": {
+        "name": "Wind gust"
+      },
+      "wind_speed": {
+        "name": "Wind speed"
+      },
+      "wind_speed_maximum": {
+        "name": "Maximum wind speed"
+      },
+      "wind_speed_minimum": {
+        "name": "Minimum wind speed"
       }
     },
     "binary_sensor": {
       "low_battery": {
         "name": "Low battery"
+      },
+      "heating": {
+        "name": "Heating"
+      },
+      "pump": {
+        "name": "Pump"
+      },
+      "hot_water": {
+        "name": "Hot water"
+      },
+      "doorbell": {
+        "name": "Doorbell"
       }
     },
     "button": {
@@ -71,6 +176,17 @@
       },
       "deactivate": {
         "name": "Deactivate"
+      }
+    },
+    "select": {
+      "preset": {
+        "name": "Preset",
+        "state": {
+          "home": "Home",
+          "away": "Away",
+          "sleep": "Sleep",
+          "holiday": "Holiday"
+        }
       }
     }
   }
